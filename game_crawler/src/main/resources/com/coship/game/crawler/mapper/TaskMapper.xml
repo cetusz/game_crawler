@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coship.game.crawler.mapper.TaskMapper">
+	
+   <resultMap type="TaskEntity" id="TaskEntityResultMap">
+        <result property="id" column="id"/>
+		<result property="createTime" column="createTime"/>
+		<result property="lastUpdateTime" column="lastUpdateTime"/>
+		
+		<result property="title" column="title"/>
+		<result property="jobClass" column="jobClass"/>
+		<result property="jobBeanName" column="jobBeanName"/>
+		
+		<result property="jobDetailName" column="jobDetailName"/>
+		<result property="jobTriggerName" column="jobTriggerName"/>
+		<result property="usable" column="usable"/>
+		
+		<result property="triggerType" column="triggerType"/>
+		<result property="targetMethod" column="targetMethod"/>
+		<result property="cronExpression" column="cronExpression"/>
+		<result property="jobStartTime" column="jobStartTime"/>
+
+		<result property="startDelay" column="startDelay"/>
+		<result property="repeatInterval" column="repeatInterval"/>
+		<result property="description" column="description"/>
+				<result property="runnable" column="runnable"/>					
+    </resultMap>
+    
+		
+	<sql id="select_columns">
+		t.id,				t.createTime,			t.lastUpdateTime,
+		t.title,			t.jobClass,				t.jobBeanName,		
+		t.jobDetailName,	t.jobTriggerName,		t.usable,				
+		t.triggerType,		t.targetMethod,			t.cronExpression,				t.jobStartTime,
+		t.startDelay,		t.repeatInterval,		t.description,t.runnable
+    </sql>
+	
+
+	<insert id="save" parameterType="TaskEntity" >
+		 <![CDATA[
+			 INSERT INTO t_task(
+				id,					createTime,				lastUpdateTime,
+				title,				jobClass,				jobBeanName,		
+				jobDetailName,		jobTriggerName,			usable,
+				triggerType,		targetMethod,			cronExpression,		jobStartTime,
+				startDelay,			repeatInterval,			description   ,       runnable      
+			 )VALUES(
+			 	#{id},				#{createTime},			#{lastUpdateTime},
+				#{title},			#{jobClass},			#{jobBeanName},		
+				#{jobDetailName},	#{jobTriggerName},		#{usable},
+				#{triggerType},		#{targetMethod},		#{cronExpression},			#{jobStartTime},
+				#{startDelay},		#{repeatInterval},		#{description} ,#{runnable}
+			 )
+		 ]]>
+	</insert>
+	
+    <update id="update" parameterType="TaskEntity" flushCache="true">
+        UPDATE t_task t
+        <set>
+	        <if test="lastUpdateTime != null" > t.lastUpdateTime=#{lastUpdateTime},</if>
+	        <if test="title != null"> t.title=#{title},</if>
+	        <if test="jobClass != null"> t.jobClass=#{jobClass},</if>
+	        <if test="jobBeanName != null"> t.jobBeanName=#{jobBeanName},</if>
+	        <if test="jobDetailName != null"> t.jobDetailName=#{jobDetailName},</if>
+	       	<if test="jobTriggerName != null"> t.jobTriggerName=#{jobTriggerName},</if>
+	       	<if test="usable != null"> t.usable=#{usable},</if>
+	       	
+	        <if test="triggerType != null"> t.triggerType=#{triggerType},</if>
+	        <if test="targetMethod != null"> t.targetMethod=#{targetMethod},</if>
+	        <if test="cronExpression != null"> t.cronExpression=#{cronExpression},</if>
+	        <if test="jobStartTime != null"> t.jobStartTime=#{jobStartTime},</if>
+	        <if test="startDelay != null"> t.startDelay=#{startDelay},</if> 
+	        <if test="repeatInterval != null"> t.repeatInterval=#{repeatInterval},</if>  
+	        <if test="description != null"> t.description=#{description},</if>
+	        <if test="runnable != null"> t.runnable=#{runnable},</if>
+        </set> 
+		WHERE id = #{id}
+ 	</update>
+	
+	 <!-- 批量更新 -->
+     <update id="updateBatch"  parameterType="Map">
+   		update  t_task	t	
+	    <set>
+	    	<if test="status != null"> t.status=#{status},</if> 
+	    	<if test="lastUpdateTime != null" > t.lastUpdateTime=#{lastUpdateTime},</if>
+	    	<if test="targetMethod != null"> t.targetMethod=#{targetMethod},</if>
+	        <if test="cronExpression != null"> t.cronExpression=#{cronExpression},</if>
+	    </set>
+   		<where>
+   			<if test=" idList != null and  idList != ''"> 
+				<foreach  collection="idList"  index="index" item="key" open=" ( " close=" ) " separator=" ">
+				      <choose>
+				      	<when test="index == 0">id = #{key}</when>
+				      	<otherwise>or id = #{key}</otherwise>
+				      </choose>
+				</foreach>
+			</if>
+		</where>
+   </update>
+	
+	<!-- 主键删除 -->
+	<delete id="deleteOne" flushCache="true" parameterType="Long">
+		DELETE FROM t_task WHERE id = #{id}
+	</delete>
+
+	<!-- 对象查询 -->
+	<select id="findOne" resultMap="TaskEntityResultMap" parameterType="Long">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_task t
+		WHERE t.id = #{id}
+	</select>
+
+	<!-- list分页查询 -->
+	<select id="selectList" resultMap="TaskEntityResultMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_task t
+		<include refid="select_where_sql"/>
+	</select>
+
+	
+	<!-- 分页查询 -->	
+	<select id="getPageList" resultMap="TaskEntityResultMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_task t
+		<include refid="select_where_sql"/>
+	</select>
+  
+  	<!-- 查询字段  -->
+	<sql id="select_where_sql">
+		<where>
+			<if test=" id != null and id != ''">
+				AND t.id = #{id}
+			</if>
+			<if test=" title != null and title != ''">
+				AND t.title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test=" jobClass != null and jobClass != ''">
+				AND t.jobClass LIKE CONCAT('%',#{jobClass},'%')
+			</if>
+			<if test=" jobBeanName != null and jobBeanName != ''">
+				AND t.jobBeanName LIKE CONCAT('%',#{jobBeanName},'%')
+			</if>
+			<if test=" usable != null and usable != ''">
+				AND t.usable =#{usable}
+			</if>
+				<if test=" runnable != null and runnable != ''">
+				AND t.runnable =#{runnable}
+			</if>
+			<if test=" triggerType!=null and triggerType!=''">
+				AND t.triggerType =#{triggerType}
+			</if>
+			<if test=" lastUpdateTimeStart != null and lastUpdateTimeStart !='' ">
+				<![CDATA[ AND  #{lastUpdateTimeStart} <= t.lastUpdateTime ]]>
+			</if>
+			<if test=" lastUpdateTimeEnd != null and lastUpdateTimeEnd !='' ">
+				<![CDATA[ AND t.lastUpdateTime <= #{lastUpdateTimeEnd} ]]>
+			</if>	
+			<if test=" createTimeStart != null and createTimeStart !='' ">
+				<![CDATA[ AND  #{createTimeStart} <= t.createTime ]]>
+			</if>
+			<if test=" createTimeEnd != null and createTimeEnd !='' ">
+				<![CDATA[ AND t.createTime <= #{createTimeEnd} ]]>
+			</if>					
+		</where>
+	</sql>
+
+  
+
+</mapper>

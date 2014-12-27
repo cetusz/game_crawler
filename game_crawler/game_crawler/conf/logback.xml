@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <property name="LOG_HOME" value="${appConfigHome}"/>
+	<appender name="info"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<Encoding>UTF-8</Encoding>
+		<File>${LOG_HOME}/logs/info/info.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/info/info%i.log
+			</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>3</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+
+		<layout>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} [%c] - %m :%L%n
+			</Pattern>
+		</layout>
+	</appender>
+	
+	<appender name="debug"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<Encoding>UTF-8</Encoding>
+		<File>${LOG_HOME}/logs/debug/debug.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/debug/debug%i.log
+			</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>3</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+
+		<layout>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} [%c] - %m :%L%n
+			</Pattern>
+		</layout>
+	</appender>
+	
+	<appender name="error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<Encoding>UTF-8</Encoding>
+		<File>${LOG_HOME}/logs/error/error.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/error/error%i.log
+			</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>3</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+
+		<layout>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} [%c] - %m :%L%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="systemerror"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<Encoding>UTF-8</Encoding>
+		<File>${LOG_HOME}/logs/error/systemerror.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/error/systemerror%i.log
+			</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>3</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+
+		<layout>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} [%c] - %m :%L%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<root level="info">
+		<append-ref ref="systemerror" />
+		<appender-ref ref="info" />
+		<appender-ref ref="debug" />
+		<appender-ref ref="error" />
+	</root>
+</configuration>

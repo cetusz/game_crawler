@@ -1,0 +1,50 @@
+body{
+   	font-size:12px;
+	text-family:'宋体';
+}
+
+table.mytable{
+	font-size:12px;
+	text-family:'宋体';
+	border-collapse:collapse;
+}
+tr{
+   	margin：10px;
+}
+.alignright{
+    width:200px;
+	text-align:right;
+	font-weight:bold;
+}
+#sources{
+    font-size:12px;
+	text-family:'宋体';
+}
+input{
+	width:300px;
+}
+.radio{
+	width:20px;
+}
+.checkbox{
+	width:20px;
+}
+select{
+ 	width:150px;
+}
+textarea{
+	width:600px;
+	height:60px;
+} 
+
+.span_tip{
+	color:blue;
+}
+
+.span_require_tip{
+	color:red;
+}
+
+
+
+    

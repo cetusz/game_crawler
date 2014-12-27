@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coship.game.crawler.mapper.PictureEntityMapper">
+	
+   <resultMap type="PictureEntity" id="resultMap">
+            <result property="id" column="id"/>
+			<result property="resourceId" column="resourceId"/>
+			<result property="sourceUrl" column="sourceUrl"/>
+			<result property="serverUrl" column="serverUrl"/>
+			<result property="sourceId" column="sourceId"/>
+			<result property="pictureType" column="pictureType"/>
+			<result property="status" column="status"/>
+			<result property="sourceType" column="sourceType"/>
+			<result property="createTime" column="createTime"/>
+			<result property="lastUpdateTime" column="lastUpdateTime"/>
+    </resultMap>
+
+		
+	<sql id="select_columns">
+		t.id,  t.resourceId,  t.sourceUrl,  t.serverUrl,  t.pictureType,  t.status, t.sourceType, t.sourceId,t.createTime,  t.lastUpdateTime
+    </sql>
+	
+	<insert id="save" parameterType="PictureEntity" 
+		useGeneratedKeys="true" keyProperty="id">
+		 <![CDATA[
+			 INSERT INTO t_picture(
+				 resourceId,  sourceUrl,  serverUrl,  pictureType,  status, sourceType, sourceId, createTime,  lastUpdateTime
+			 )VALUES(
+			 	#{resourceId},  #{sourceUrl},  #{serverUrl},  #{pictureType},  #{status}, #{sourceType},#{sourceId}, now(),  now()
+			 )
+		 ]]>
+	</insert>
+	
+    <update id="update" parameterType="PictureEntity" flushCache="true">
+        UPDATE t_picture t
+        <set>
+			<if test="resourceId!= null and resourceId!= ''" >t.resourceId=#{resourceId},</if>
+			<if test="sourceUrl!= null and sourceUrl!= ''" >t.sourceUrl=#{sourceUrl},</if>
+			<if test="serverUrl!= null and serverUrl!= ''" >  t.serverUrl=#{serverUrl},</if>
+			<if test="pictureType!= null and pictureType!= ''" >t.pictureType=#{pictureType},</if>
+			<if test="sourceId != null and sourceId != ''" >t.sourceId=#{sourceId},</if>
+			<if test="status!= null and status!= ''" > t.status=#{status},</if>
+			<if test="createTime!= null and createTime!= ''" >t.createTime=#{createTime},</if>
+			<if test="lastUpdateTime!= null and lastUpdateTime!= ''" >t.lastUpdateTime=#{lastUpdateTime},</if>
+		</set> 
+		WHERE id = #{id}
+ 	</update>
+	
+	<!-- 主键删除 -->
+	<delete id="deleteOne" flushCache="true" parameterType="Long">
+		DELETE FROM t_picture WHERE id = #{id}
+	</delete>
+	
+
+	
+	
+	<!-- 多行删除 -->
+     <delete id="deleteMulti"  parameterType="List">
+   		delete from t_picture 
+   		<where>
+			<if test="list != null and list != ''">
+				 id in 
+				<foreach collection="list" item="key" open=" ( " close=" ) " separator=",">
+					#{key}
+				</foreach>
+			</if>
+		</where>
+   </delete>
+   
+
+	<!-- 对象查询 -->
+	<select id="findOne" resultMap="resultMap" parameterType="Long">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_picture t
+		WHERE t.id = #{id}
+	</select>
+
+	<!-- list分页查询 -->
+	<select id="selectList" resultMap="resultMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_picture t
+		<include refid="select_where_sql"/>
+		<if test="tableSorts!=null and tableSorts!=''">
+			ORDER BY ${tableSorts}
+		</if>
+	</select>
+
+
+	<!-- 查询字段  -->
+	<sql id="select_where_sql">
+		<where>
+			<if test="resourceId!= null and resourceId!= ''" > AND t.resourceId=#{resourceId}</if>
+			<if test="sourceUrl!= null and sourceUrl!= ''" > AND t.sourceUrl=#{sourceUrl}</if>
+			<if test="sourceType != null and sourceType != ''" > AND t.sourceType=#{sourceType}</if>
+			<if test="serverUrl!= null and serverUrl!= ''" > AND t.serverUrl=#{serverUrl}</if>
+			<if test="pictureType!= null and pictureType!= ''" > AND t.pictureType=#{pictureType}</if>
+			<if test="sourceId != null and sourceId != ''" > and t.sourceId=#{sourceId}</if>
+			<if test="status!= null and status!= ''" > AND t.status=#{status}</if>
+			<if test="createTime!= null and createTime!= ''" > AND t.createTime=#{createTime}</if>
+			<if test="lastUpdateTime!= null and lastUpdateTime!= ''" > AND t.lastUpdateTime=#{lastUpdateTime}</if>
+		</where>
+	</sql>
+	
+	<!-- 分页查询 -->	
+	<select id="getPageList" resultMap="resultMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="select_columns"/>
+		FROM t_picture t
+		<include refid="page_where_sql"/>
+		<if test="tableSorts!=null and tableSorts!=''">
+			ORDER BY ${tableSorts}
+		</if>
+	</select>
+  
+  	<!-- 查询字段  -->
+	<sql id="page_where_sql">
+		<where>
+			<if test="resourceId!= null and resourceId!= ''" > AND t.resourceId=#{resourceId}</if>
+			<if test="sourceUrl!= null and sourceUrl!= ''" > AND t.sourceUrl=#{sourceUrl}</if>
+			<if test="serverUrl!= null and serverUrl!= ''" > AND t.serverUrl=#{serverUrl}</if>
+			<if test="pictureType!= null and pictureType!= ''" > AND t.pictureType=#{pictureType}</if>
+			<if test="status!= null and status!= ''" > AND t.status=#{status}</if>
+			<if test="sourceId != null and sourceId != ''" > and t.sourceId=#{sourceId}</if>
+			<if test="createTime!= null and createTime!= ''" > AND t.createTime=#{createTime}</if>
+			<if test="lastUpdateTime!= null and lastUpdateTime!= ''" > AND t.lastUpdateTime=#{lastUpdateTime}</if>
+		</where>
+	</sql>
+
+</mapper>

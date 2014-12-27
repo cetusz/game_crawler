@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<conf>
+	<!-- APK配置信息 -->
+	<apk>
+	  <ftpPath></ftpPath>
+	  <localPath>E:/game_crawler</localPath>
+	</apk>
+	<!-- APK配置信息 -->
+	<!-- 图片配置 -->
+	<picture>
+	   <ftpPath></ftpPath>
+	   <localSavePath>E:/game_crawler</localSavePath>
+	   <!-- 图片大小限制 -->
+	   <maxsize>0</maxsize>
+	</picture>
+	<!-- 图片配置 -->
+	<!-- ftp配置 -->
+	<ftp>
+	   <host>172.30.25.245</host>
+	   <port>21</port>
+       <user>ftper</user>
+       <pwd>ftper</pwd>
+       <uploadBasePath>game_crawler</uploadBasePath>
+       <downloadTmpDir>E:/apk_test</downloadTmpDir>	
+	</ftp>
+	<!-- ftp配置 -->
+	
+	<!-- 网站抓取策略配置 -->
+	<fetch>
+		<apkFetchAll>true</apkFetchAll>
+		<apkFetchDay>-2</apkFetchDay>
+		<videoFetchAll>true</videoFetchAll>
+		<videoFetchDay>-2</videoFetchDay>
+		<threadCounts>5</threadCounts>
+	</fetch>
+	
+	<!-- 抓取网页-->
+	<network>
+		<dangbei>
+			<homeUrl>http://www.dangbei.com/</homeUrl>
+			<fetchUrl>http://www.dangbei.com/app/tv/list_2_%d.html</fetchUrl>
+		</dangbei>
+		<qipo>
+			<homeUrl>http://down.7po.com/</homeUrl>
+			<fetchUrl>http://down.7po.com/games_new_%d.html</fetchUrl>
+		</qipo>
+		<tgbus>
+			<fetchUrl>http://v.tgbus.com</fetchUrl>
+		</tgbus>
+	</network>
+</conf>
